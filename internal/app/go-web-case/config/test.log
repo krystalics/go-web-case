@@ -1,2 +1,18 @@
 2022-05-04T19:31:10.367+0800	DEBUG	config/DaoConfig.go:25	db dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local?charset=utf8&parseTime=True&loc=Local
 2022-05-04T19:31:13.024+0800	INFO	config/DaoConfig.go:41	db connected success
+2022-05-04T19:49:19.752+0800	DEBUG	config/dao_config.go:25	db dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local?charset=utf8&parseTime=True&loc=Local
+2022-05-04T19:49:19.765+0800	ERROR	config/dao_config.go:41	db connected success
+go-web-case/internal/app/go-web-case/config.Connect
+	/Users/krysta/GolandProjects/go-web-case/internal/app/go-web-case/config/dao_config.go:41
+go-web-case/internal/app/go-web-case/config.TestName
+	/Users/krysta/GolandProjects/go-web-case/internal/app/go-web-case/config/dao_config_test.go:12
+testing.tRunner
+	/Users/krysta/sdk/go1.18.1/src/testing/testing.go:1439
+2022-05-04T19:51:36.810+0800	DEBUG	config/dao_config.go:25	db dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local?charset=utf8&parseTime=True&loc=Local
+2022-05-04T19:51:36.823+0800	ERROR	config/dao_config.go:41	db connected success
+go-web-case/internal/app/go-web-case/config.Connect
+	/Users/krysta/GolandProjects/go-web-case/internal/app/go-web-case/config/dao_config.go:41
+go-web-case/internal/app/go-web-case/config.TestName
+	/Users/krysta/GolandProjects/go-web-case/internal/app/go-web-case/config/dao_config_test.go:12
+testing.tRunner
+	/Users/krysta/sdk/go1.18.1/src/testing/testing.go:1439

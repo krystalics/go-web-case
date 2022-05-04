@@ -38,7 +38,7 @@ func Connect(cfg *mysql.Config) {
 
 	globalDB = db
 
-	globalLogger.Infof("db connected success")
+	globalLogger.Errorf("db connected success")
 }
 
 func GetDB(ctx context.Context) *gorm.DB {

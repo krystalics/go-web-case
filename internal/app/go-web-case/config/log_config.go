@@ -13,9 +13,16 @@ func InitLogger() {
 	writer := getLogWriter()
 	encoder := getEncoder()
 
-	core := zapcore.NewCore(encoder, writer, zapcore.DebugLevel)
+	core := zapcore.NewCore(
+		encoder, writer,
+		zapcore.DebugLevel,
+	)
 
-	log := zap.New(core, zap.AddCaller())
+	log := zap.New(
+		core,
+		zap.AddCaller(),
+		zap.AddStacktrace(zap.ErrorLevel), //error级别的日志打印堆栈
+	)
 
 	globalLogger = log.Sugar()
 }
