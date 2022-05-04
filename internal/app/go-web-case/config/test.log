@@ -1,0 +1,2 @@
+2022-05-04T19:31:10.367+0800	DEBUG	config/DaoConfig.go:25	db dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local?charset=utf8&parseTime=True&loc=Local
+2022-05-04T19:31:13.024+0800	INFO	config/DaoConfig.go:41	db connected success
