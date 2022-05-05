@@ -1,6 +1,7 @@
-package config
+package test
 
 import (
+	"go-web-case/internal/app/go-web-case/config"
 	"gorm.io/driver/mysql"
 	"testing"
 )
@@ -8,8 +9,8 @@ import (
 func TestName(t *testing.T) {
 	dsn := "root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local"
 
-	InitLogger()
-	Connect(&mysql.Config{
+	config.InitLogger()
+	config.Connect(&mysql.Config{
 		DSN:                       dsn,
 		Conn:                      nil,
 		SkipInitializeWithVersion: false,
