@@ -1,3 +1,6 @@
-# env=test
-bigbro.diaodu_url: test
-alarm.mail.url: test
+log:
+  level: info
+  filename: app.log
+  maxSize: 10
+  maxAge: 30
+  maxBackups: 30

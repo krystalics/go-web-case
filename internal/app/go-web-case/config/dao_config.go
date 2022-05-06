@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 	"fmt"
+	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -22,7 +23,7 @@ func Connect(cfg *mysql.Config) {
 		"%s?charset=utf8&parseTime=True&loc=Local",
 		cfg.DSN,
 	)
-	globalLogger.Debugf("db dsn: %s", dsn)
+	zap.L().Debug("db ", zap.String("dsn", dsn))
 
 	ormLogger := logger.Default
 
@@ -38,7 +39,7 @@ func Connect(cfg *mysql.Config) {
 
 	globalDB = db
 
-	globalLogger.Errorf("db connected success")
+	zap.L().Info("db connected success")
 }
 
 func GetDB(ctx context.Context) *gorm.DB {

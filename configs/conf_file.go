@@ -16,7 +16,7 @@ func InitConf() {
 		viper.SetConfigName("application")
 	}
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath(".") //需要和配置文件放在同一个目录下
+	viper.AddConfigPath("configs") //和入口main文件的相对位置
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: %w \n", err))
