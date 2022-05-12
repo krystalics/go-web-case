@@ -28,7 +28,7 @@ func main() {
 
 	//中间需要将 路径和对应的处理方法绑定
 	router.GET("/ping", func(c *gin.Context) {
-		c.String(200, "pong")
+		go c.String(200, "pong")
 	})
 
 	router.Run("127.0.0.1:8080") // listen and serve on 0.0.0.0:8080

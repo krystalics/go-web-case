@@ -8,7 +8,9 @@ import (
 	"net"
 	"net/http"
 	"net/http/httputil"
+	"runtime"
 	"runtime/debug"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -67,7 +69,6 @@ func getEncoder() zapcore.Encoder {
 	config := zap.NewProductionEncoderConfig()
 	config.EncodeTime = zapcore.ISO8601TimeEncoder
 	config.EncodeLevel = zapcore.CapitalLevelEncoder
-
 	return zapcore.NewConsoleEncoder(config)
 
 }
@@ -84,8 +85,8 @@ func GinLogger() gin.HandlerFunc {
 		//执行完成后
 
 		cost := time.Since(start)
-
 		globalLogger.Info(path,
+			zap.String("routine", strconv.Itoa(runtime.NumGoroutine())),
 			zap.Int("status", c.Writer.Status()),
 			zap.String("method", c.Request.Method),
 			zap.String("path", path),
