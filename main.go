@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"go-web-case/config"
 	"go-web-case/internal/app/go-web-case/conf"
 	"go.uber.org/zap"
 	"net/http"
@@ -63,13 +62,13 @@ func main() {
 }
 
 func InitApp() {
-	config.InitConf()
-	err := conf.InitLogger(config.GetLogConfig())
+	conf.InitConf()
+	err := conf.InitLogger(conf.GetLogConfig())
 	if err != nil {
 		zap.L().Error("init logger error")
 		return
 	}
-	err = conf.InitDB(config.GetDataSourceConfig())
+	err = conf.InitDB(conf.GetDataSourceConfig())
 	if err != nil {
 		zap.L().Error("init db error")
 		return

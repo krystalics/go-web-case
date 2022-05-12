@@ -1,9 +1,8 @@
-package config
+package conf
 
 import (
 	"fmt"
 	"github.com/spf13/viper"
-	"go-web-case/internal/app/go-web-case/conf"
 	"os"
 )
 
@@ -24,8 +23,8 @@ func InitConf() {
 	}
 }
 
-func GetLogConfig() *conf.LogConfig {
-	return &conf.LogConfig{
+func GetLogConfig() *LogConfig {
+	return &LogConfig{
 		Level:      viper.GetString("log.level"),
 		Filename:   viper.GetString("log.filename"),
 		MaxSize:    viper.GetInt("log.maxSize"),
@@ -34,8 +33,8 @@ func GetLogConfig() *conf.LogConfig {
 	}
 }
 
-func GetDataSourceConfig() *conf.DataSourceConf {
-	return &conf.DataSourceConf{
+func GetDataSourceConfig() *DataSourceConf {
+	return &DataSourceConf{
 		MaxOpen: viper.GetInt("datasource.maxOpen"),
 		MaxConn: viper.GetInt("datasource.maxConn"),
 		Dsn:     viper.GetString("datasource.dsn"),

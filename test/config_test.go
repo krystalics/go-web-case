@@ -3,12 +3,12 @@ package test
 import (
 	"fmt"
 	"github.com/spf13/viper"
-	"go-web-case/config"
+	"go-web-case/internal/app/go-web-case/conf"
 	"testing"
 )
 
 func TestInitConf(t *testing.T) {
-	config.InitConf()
+	conf.InitConf()
 	fmt.Println(viper.Get("bigbro.diaodu_url"))
 	fmt.Println(viper.Get("auth.server.url"))
 }
