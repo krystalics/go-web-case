@@ -1,4 +1,4 @@
-package configs
+package config
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ func InitConf() {
 		viper.SetConfigName("application")
 	}
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("configs") //和入口main文件的相对位置
+	viper.AddConfigPath("config") //和入口main文件的相对位置
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: %w \n", err))

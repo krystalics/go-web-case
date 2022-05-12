@@ -1,4 +1,4 @@
-package config
+package conf
 
 import (
 	"github.com/gin-gonic/gin"
@@ -34,7 +34,7 @@ func InitLogger(cfg *LogConfig) (err error) {
 	l := new(zapcore.Level)
 	err = l.UnmarshalText([]byte(cfg.Level))
 	if err != nil {
-		return
+		return err
 	}
 
 	core := zapcore.NewCore(
@@ -48,6 +48,7 @@ func InitLogger(cfg *LogConfig) (err error) {
 	)
 
 	zap.ReplaceGlobals(globalLogger) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
+
 	return
 }
 
@@ -82,7 +83,7 @@ func GinLogger() gin.HandlerFunc {
 		query := c.Request.URL.RawQuery
 		//执行后续中间件
 		c.Next()
-		//执行完成后
+		//执行完成后，属于是整个middleware set都执行完后、才会按照调用栈都顺序执行后面的代码
 
 		cost := time.Since(start)
 		globalLogger.Info(path,
