@@ -20,10 +20,10 @@ func main() {
 		MaxBackups: viper.GetInt("log.maxBackups"),
 	})
 
-	gin.SetMode(gin.ReleaseMode)
+	//gin.SetMode(gin.ReleaseMode)
 
 	router := gin.Default()
-	//全局使用跨域的配置、改造了gin的logger
+	//全局使用跨域的配置、改造了gin的logger 以及对应的recovery
 	router.Use(config.CorsHandler(), config.GinLogger(), config.GinRecovery(true))
 
 	//中间需要将 路径和对应的处理方法绑定

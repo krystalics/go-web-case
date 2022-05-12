@@ -39,7 +39,7 @@ func InitLogger(cfg *LogConfig) (err error) {
 		encoder, writer, l,
 	)
 
-	globalLogger := zap.New(
+	globalLogger = zap.New(
 		core,
 		zap.AddCaller(),
 		zap.AddStacktrace(zap.ErrorLevel), //error级别的日志打印堆栈
@@ -85,7 +85,6 @@ func GinLogger() gin.HandlerFunc {
 
 		cost := time.Since(start)
 
-		//fixme globalLogger=nil
 		globalLogger.Info(path,
 			zap.Int("status", c.Writer.Status()),
 			zap.String("method", c.Request.Method),
