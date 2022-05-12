@@ -2,44 +2,48 @@ package conf
 
 import (
 	"context"
-	"fmt"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"log"
 )
 
-type Dao struct {
+type DataSourceConf struct {
+	MaxConn int //最大连接数
+	MaxOpen int
+	Dsn     string
 }
 
 var globalDB *gorm.DB
 
-//在项目初始化前、调用它
-func Connect(cfg *mysql.Config) {
-
-	dsn := fmt.Sprintf(
-		"%s?charset=utf8&parseTime=True&loc=Local",
-		cfg.DSN,
-	)
-	zap.L().Debug("db ", zap.String("dsn", dsn))
-
+func InitDB(cfg *DataSourceConf) (err error) {
+	zap.L().Info("db init  ", zap.String("dsn", cfg.Dsn))
 	ormLogger := logger.Default
 
-	db, err := gorm.Open(mysql.Open(cfg.DSN), &gorm.Config{
+	db, err := gorm.Open(mysql.Open(cfg.Dsn), &gorm.Config{
 		Logger: ormLogger,
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix: "", // 表名前缀
 		},
 	})
+
+	//根据 *gorm.DB 获取 *sql.DB 来配置线程池
+	sqlDB, err := db.DB()
+	defer sqlDB.Close()
+
 	if err != nil {
-		log.Fatal(err)
+		zap.L().Fatal(err.Error())
+		return err
 	}
+
+	sqlDB.SetMaxIdleConns(cfg.MaxConn)
+	sqlDB.SetMaxOpenConns(cfg.MaxOpen)
 
 	globalDB = db
 
 	zap.L().Info("db connected success")
+	return nil
 }
 
 func GetDB(ctx context.Context) *gorm.DB {

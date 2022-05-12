@@ -1,6 +1,14 @@
+gin:
+  mode: debug
+
 log:
   level: info
   filename: app.log
   maxSize: 10
   maxAge: 30
   maxBackups: 30
+
+datasource:
+  dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local
+  maxConn: 200
+  maxOpen: 200

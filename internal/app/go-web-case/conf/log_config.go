@@ -25,8 +25,6 @@ type LogConfig struct {
 
 var globalLogger *zap.Logger
 
-//todo 全局对象、需要程序启动前调用这个Init方法
-//需要先从配置文件获取这些配置
 func InitLogger(cfg *LogConfig) (err error) {
 	writer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
 	encoder := getEncoder()
