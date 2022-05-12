@@ -98,10 +98,14 @@ func GinLogger() gin.HandlerFunc {
 	}
 }
 
-//gin会有自己的recover、但是日志是打印在console、需要和zap配合的话也要重写
+//GinRecovery gin会有自己的recover、但是日志是打印在console、需要和zap配合的话也要重写
 //recover可能出现的panic
 func GinRecovery(stack bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//panic: http: wrote more than the declared Content-Length 出现panic没有捕捉到
+		//在middleware最里层就是handler了，所以这个理论上能捕获handler的panic
+
+		//利用recover处理panic指令，defer必须在panic之前声明，否则当panic时，recover无法捕获到panic．
 		defer func() {
 			if err := recover(); err != nil {
 				var brokenPipe bool
