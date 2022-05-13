@@ -8,7 +8,7 @@ import (
 )
 
 func TestInitConf(t *testing.T) {
-	conf.InitConf()
+	conf.ReadConfFromFile()
 	fmt.Println(viper.Get("bigbro.diaodu_url"))
 	fmt.Println(viper.Get("auth.server.url"))
 }

@@ -1,31 +1,26 @@
 package conf
 
 import (
-	"context"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"time"
 )
 
 type DBConfig struct {
-	Addr         string        // for trace
-	DSN          string        // write data source name.
-	ReadDSN      []string      // read data source name.
-	Active       int           // pool
-	Idle         int           // pool
-	IdleTimeout  time.Duration // connect max life time.
-	QueryTimeout time.Duration // query sql timeout
-	ExecTimeout  time.Duration // execute sql timeout
-	TranTimeout  time.Duration // transaction sql timeout
+	Addr         string   // for trace
+	DSN          string   // write data source name.
+	ReadDSN      []string // read data source name.
+	Active       int      // pool
+	Idle         int      // pool
+	IdleTimeout  int      // connect max life time.
+	QueryTimeout int      // query sql timeout
+	ExecTimeout  int      // execute sql timeout
+	TranTimeout  int      // transaction sql timeout
 }
 
-var globalDB *gorm.DB
-
-func InitDB(cfg *DBConfig) (err error) {
-	zap.L().Info("db init  ", zap.String("dsn", cfg.DSN))
+func InitDB(cfg *DBConfig) *gorm.DB {
 	ormLogger := logger.Default
 
 	db, err := gorm.Open(mysql.Open(cfg.DSN), &gorm.Config{
@@ -41,18 +36,13 @@ func InitDB(cfg *DBConfig) (err error) {
 
 	if err != nil {
 		zap.L().Fatal(err.Error())
-		return err
+		return nil
 	}
 
 	sqlDB.SetMaxIdleConns(cfg.Idle)
 	sqlDB.SetMaxOpenConns(cfg.Active)
 
-	globalDB = db
-
 	zap.L().Info("db connected success")
-	return nil
+	return db
 }
 
-func GetDB(ctx context.Context) *gorm.DB {
-	return globalDB.WithContext(ctx)
-}

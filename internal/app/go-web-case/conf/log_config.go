@@ -14,29 +14,27 @@ type LogConfig struct {
 	MaxBackups int    `json:"max_backups"`
 }
 
-var globalLogger *zap.Logger
-
-func InitLogger(cfg *LogConfig) (err error) {
+func InitLogger(cfg *LogConfig) {
 	writer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
 	encoder := getEncoder()
 
 	l := new(zapcore.Level)
-	err = l.UnmarshalText([]byte(cfg.Level))
+	err := l.UnmarshalText([]byte(cfg.Level))
 	if err != nil {
-		return err
+		return
 	}
 
 	core := zapcore.NewCore(
 		encoder, writer, l,
 	)
 
-	globalLogger = zap.New(
+	logger := zap.New(
 		core,
 		zap.AddCaller(),
 		zap.AddStacktrace(zap.ErrorLevel), //error级别的日志打印堆栈
 	)
 
-	zap.ReplaceGlobals(globalLogger) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
+	zap.ReplaceGlobals(logger) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 
 	return
 }

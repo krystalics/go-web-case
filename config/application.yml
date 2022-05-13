@@ -1,5 +1,8 @@
-gin:
+http:
+  port: 8088
   mode: debug
+  read-time-out: 60 #单位为s、请求的超时时间设置
+  write-time-out: 60
 
 log:
   level: info
@@ -9,6 +12,14 @@ log:
   maxBackups: 30
 
 datasource:
+  addr: 127.0.0.1:3306
   dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local
-  maxConn: 200
-  maxOpen: 200
+  read-dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local
+    - root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local
+    - root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local
+  active: 200
+  idle: 200
+  idle-time-out: 60 #单位都是s
+  query-time-out: 60
+  exec-time-out: 60
+  tran-time-out: 60

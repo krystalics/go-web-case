@@ -1,6 +1,7 @@
 package ginpprof
 
 import (
+	handlerServer "go-web-case/internal/app/go-web-case/handler"
 	"net/http/pprof"
 	"strings"
 
@@ -17,11 +18,7 @@ var Wrapper = Wrap
 
 // WrapGroup adds several routes from package `net/http/pprof` to *gin.RouterGroup object
 func WrapGroup(router *gin.RouterGroup) {
-	routers := []struct {
-		Method  string
-		Path    string
-		Handler gin.HandlerFunc
-	}{
+	routers := []handlerServer.URLHandlerMap{
 		{"GET", "/debug/pprof/", IndexHandler()},
 		{"GET", "/debug/pprof/heap", HeapHandler()},
 		{"GET", "/debug/pprof/goroutine", GoroutineHandler()},

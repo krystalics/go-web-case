@@ -4,25 +4,34 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"os"
-	"time"
 )
 
 type Config struct {
 	App       *App
 	Log       *LogConfig
-	MySQLConf *DataSourceConf
+	MySQLConf *DBConfig
 }
 
 type App struct {
 	HttpPort     int
 	RunMode      string
-	ReadTimeout  time.Duration //单位s
-	WriteTimeout time.Duration
+	ReadTimeout  int //单位s
+	WriteTimeout int
 }
 
-// InitConf viper初始化完成，就可以直接使用viper.get来参与运算了
+func New() *Config {
+	ReadConfFromFile()
+
+	return &Config{
+		App:       GetAppConfig(),
+		Log:       GetLogConfig(),
+		MySQLConf: GetDataSourceConfig(),
+	}
+}
+
+// ReadConfFromFile viper初始化完成，就可以直接使用viper.get来参与运算了
 //当需要读多个文件的时候，需要用户管理多个viper实例，不能默认使用它的单例
-func InitConf() {
+func ReadConfFromFile() {
 	suffix := os.Getenv("APP_ENV")
 	if suffix != "" {
 		viper.SetConfigName("application" + "-" + suffix)
@@ -37,6 +46,15 @@ func InitConf() {
 	}
 }
 
+func GetAppConfig() *App {
+	return &App{
+		HttpPort:     viper.GetInt("http.port"),
+		RunMode:      viper.GetString("http.mode"),
+		ReadTimeout:  viper.GetInt("http.read-time-out"),
+		WriteTimeout: viper.GetInt("http.write-time-out"),
+	}
+}
+
 func GetLogConfig() *LogConfig {
 	return &LogConfig{
 		Level:      viper.GetString("log.level"),
@@ -47,10 +65,17 @@ func GetLogConfig() *LogConfig {
 	}
 }
 
-func GetDataSourceConfig() *DataSourceConf {
-	return &DataSourceConf{
-		MaxOpen: viper.GetInt("datasource.maxOpen"),
-		MaxConn: viper.GetInt("datasource.maxConn"),
-		Dsn:     viper.GetString("datasource.dsn"),
+func GetDataSourceConfig() *DBConfig {
+	return &DBConfig{
+		Addr:         viper.GetString("datasource.addr"),
+		DSN:          viper.GetString("datasource.dsn"),
+		ReadDSN:      viper.GetStringSlice("datasource.read-dsn"),
+		Active:       viper.GetInt("datasource.active"),
+		Idle:         viper.GetInt("datasource.idle"),
+		IdleTimeout:  viper.GetInt("datasource.idle-time-out"),
+		QueryTimeout: viper.GetInt("datasource.query-time-out"),
+		ExecTimeout:  viper.GetInt("datasource.exec-time-out"),
+		TranTimeout:  viper.GetInt("datasource.tran-time-out"),
 	}
+
 }
