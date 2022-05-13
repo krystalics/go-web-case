@@ -4,7 +4,21 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"os"
+	"time"
 )
+
+type Config struct {
+	App       *App
+	Log       *LogConfig
+	MySQLConf *DataSourceConf
+}
+
+type App struct {
+	HttpPort     int
+	RunMode      string
+	ReadTimeout  time.Duration //单位s
+	WriteTimeout time.Duration
+}
 
 // InitConf viper初始化完成，就可以直接使用viper.get来参与运算了
 //当需要读多个文件的时候，需要用户管理多个viper实例，不能默认使用它的单例

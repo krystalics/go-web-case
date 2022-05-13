@@ -49,4 +49,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	gorm.io/driver/mysql v1.3.3 // indirect
 	gorm.io/gorm v1.23.5 // indirect
+	github.com/go-resty/resty/v2 v2.7.0 // indirect
 )

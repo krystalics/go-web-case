@@ -7,21 +7,28 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+	"time"
 )
 
-type DataSourceConf struct {
-	MaxConn int //最大连接数
-	MaxOpen int
-	Dsn     string
+type DBConfig struct {
+	Addr         string        // for trace
+	DSN          string        // write data source name.
+	ReadDSN      []string      // read data source name.
+	Active       int           // pool
+	Idle         int           // pool
+	IdleTimeout  time.Duration // connect max life time.
+	QueryTimeout time.Duration // query sql timeout
+	ExecTimeout  time.Duration // execute sql timeout
+	TranTimeout  time.Duration // transaction sql timeout
 }
 
 var globalDB *gorm.DB
 
-func InitDB(cfg *DataSourceConf) (err error) {
-	zap.L().Info("db init  ", zap.String("dsn", cfg.Dsn))
+func InitDB(cfg *DBConfig) (err error) {
+	zap.L().Info("db init  ", zap.String("dsn", cfg.DSN))
 	ormLogger := logger.Default
 
-	db, err := gorm.Open(mysql.Open(cfg.Dsn), &gorm.Config{
+	db, err := gorm.Open(mysql.Open(cfg.DSN), &gorm.Config{
 		Logger: ormLogger,
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix: "", // 表名前缀
@@ -37,8 +44,8 @@ func InitDB(cfg *DataSourceConf) (err error) {
 		return err
 	}
 
-	sqlDB.SetMaxIdleConns(cfg.MaxConn)
-	sqlDB.SetMaxOpenConns(cfg.MaxOpen)
+	sqlDB.SetMaxIdleConns(cfg.Idle)
+	sqlDB.SetMaxOpenConns(cfg.Active)
 
 	globalDB = db
 
