@@ -22,7 +22,6 @@ func GinLogger() gin.HandlerFunc {
 		//执行后续中间件
 		c.Next()
 		//执行完成后，属于是整个middleware set都执行完后、才会按照调用栈都顺序执行后面的代码
-
 		cost := time.Since(start)
 		zap.L().Info(path,
 			zap.String("routine", strconv.Itoa(runtime.NumGoroutine())),

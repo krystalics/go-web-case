@@ -15,7 +15,7 @@ type Dao struct {
 func New(c *conf.Config) (dao *Dao) {
 	dao = &Dao{
 		conf: c,
-		db:   conf.InitDB(c.MySQLConf),
+		db:   conf.InitDB(c),
 	}
 	return
 }
