@@ -2,7 +2,7 @@ package test
 
 import (
 	"github.com/gin-gonic/gin"
-	ginpprof "go-web-case/internal/app/go-web-case/pprof"
+	ginpprof "go-web-case/internal/app/go-web-case/router"
 	"strings"
 	"testing"
 )

@@ -1,7 +1,8 @@
-package handlerServer
+package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-web-case/internal/app/go-web-case/common"
 	"go.uber.org/zap"
 	"net/http"
 	"net/http/httputil"
@@ -16,7 +17,7 @@ func Ping(c *gin.Context) {
 		zap.L().Info("do something async done")
 	}()
 
-	c.String(http.StatusOK, "pong")
+	c.JSON(http.StatusOK, common.GetSuccess("pong", c.Request.RequestURI, "success"))
 
 }
 
@@ -35,6 +36,6 @@ func Ping2(c *gin.Context) {
 			}
 		}()
 
-		c.String(http.StatusOK, "pong")
+		c.JSON(http.StatusOK, common.GetSuccess("pong", c.Request.RequestURI, "success"))
 	}()
 }

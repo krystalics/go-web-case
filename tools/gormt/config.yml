@@ -1,0 +1,21 @@
+# https://github.com/xxjwxc/gormt
+base:
+    is_dev: false
+mysql_info:
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: "123456"
+    database: demo
+out_dir: ../model
+url_tag: json
+language: 中 文
+db_tag: gorm
+simple: true
+is_web_tag: true
+singular_table: true
+is_foreign_key: false
+is_out_sql: false
+is_out_func: false
+is_gui: false
+is_table_name: true
