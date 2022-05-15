@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"go-web-case/internal/app/go-web-case/conf"
-	handlerServer "go-web-case/internal/app/go-web-case/handler"
 	"go-web-case/internal/app/go-web-case/router"
+	"go-web-case/internal/app/go-web-case/service"
 	"go.uber.org/zap"
 	"net/http"
 	"os"
@@ -21,7 +21,9 @@ func main() {
 	gin.SetMode(config.App.RunMode)
 	zap.L().Info("app config init success")
 	r := router.InitRouter()
-	handlerServer.New(config, r)
+
+	//将底层service对象初始化完成
+	service.New(config)
 
 	serverAddr := "127.0.0.1:" + strconv.Itoa(config.App.HttpPort)
 	//TODO ReadTimeout 和 WriteTimeout根据实际需要去修改

@@ -34,7 +34,7 @@ func checkRouters(routers gin.RoutesInfo, t *testing.T) {
 			t.Errorf("missing router %s", router.Path)
 		}
 		if !strings.Contains(router.Handler, name) {
-			t.Errorf("handler for %s should contain %s, got %s", router.Path, name, router.Handler)
+			t.Errorf("controller for %s should contain %s, got %s", router.Path, name, router.Handler)
 		}
 	}
 }
