@@ -13,19 +13,19 @@ type Config struct {
 }
 
 type App struct {
-	HttpPort     int
-	RunMode      string
-	ReadTimeout  int //单位s
-	WriteTimeout int
+	HttpPort     int    `mapstructure:"port"`
+	RunMode      string `mapstructure:"mode"`
+	ReadTimeout  int    `mapstructure:"read-time-out"`
+	WriteTimeout int    `mapstructure:"write-time-out"`
 }
 
 func New() *Config {
 	ReadConfFromFile()
 
 	return &Config{
-		App:       GetAppConfig(),
-		Log:       GetLogConfig(),
-		MySQLConf: GetDataSourceConfig(),
+		App:       NewSubConfig[App]("http"),
+		Log:       NewSubConfig[LogConfig]("log"),
+		MySQLConf: NewSubConfig[DBConfig]("datasource"),
 	}
 }
 
@@ -46,36 +46,12 @@ func ReadConfFromFile() {
 	}
 }
 
-func GetAppConfig() *App {
-	return &App{
-		HttpPort:     viper.GetInt("http.port"),
-		RunMode:      viper.GetString("http.mode"),
-		ReadTimeout:  viper.GetInt("http.read-time-out"),
-		WriteTimeout: viper.GetInt("http.write-time-out"),
+// NewSubConfig 泛型 真爽
+func NewSubConfig[T any](key string) *T {
+	var t T
+	err := viper.Sub(key).Unmarshal(&t)
+	if err != nil {
+		panic(fmt.Errorf("Fatal error config file: %w \n", err))
 	}
-}
-
-func GetLogConfig() *LogConfig {
-	return &LogConfig{
-		Level:      viper.GetString("log.level"),
-		Filename:   viper.GetString("log.filename"),
-		MaxSize:    viper.GetInt("log.maxSize"),
-		MaxAge:     viper.GetInt("log.maxAge"),
-		MaxBackups: viper.GetInt("log.maxBackups"),
-	}
-}
-
-func GetDataSourceConfig() *DBConfig {
-	return &DBConfig{
-		Addr:         viper.GetString("datasource.addr"),
-		DSN:          viper.GetString("datasource.dsn"),
-		ReadDSN:      viper.GetStringSlice("datasource.read-dsn"),
-		Active:       viper.GetInt("datasource.active"),
-		Idle:         viper.GetInt("datasource.idle"),
-		IdleTimeout:  viper.GetInt("datasource.idle-time-out"),
-		QueryTimeout: viper.GetInt("datasource.query-time-out"),
-		ExecTimeout:  viper.GetInt("datasource.exec-time-out"),
-		TranTimeout:  viper.GetInt("datasource.tran-time-out"),
-	}
-
+	return &t
 }

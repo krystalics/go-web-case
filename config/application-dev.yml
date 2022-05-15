@@ -19,7 +19,7 @@ datasource:
     - root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True
   active: 200
   idle: 200
-  idle-time-out: 60 #单位都是s
-  query-time-out: 60
-  exec-time-out: 60
-  tran-time-out: 60
+  idle-timeout: 60 #单位都是s
+  query-timeout: 60
+  exec-timeout: 60
+  tran-timeout: 60

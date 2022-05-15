@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	jsoniter "github.com/json-iterator/go"
 	"go-web-case/internal/app/go-web-case/common"
 	"go.uber.org/zap"
 	"net"
@@ -19,6 +20,9 @@ func GinLogger() gin.HandlerFunc {
 		start := time.Now()
 		path := c.Request.URL.Path
 		query := c.Request.URL.RawQuery
+		json := make(map[string]interface{}) //注意该结构接受的内容
+		c.BindJSON(&json)
+		bodyStr, _ := jsoniter.MarshalToString(json)
 		//执行后续中间件
 		c.Next()
 		//执行完成后，属于是整个middleware set都执行完后、才会按照调用栈都顺序执行后面的代码
@@ -31,7 +35,8 @@ func GinLogger() gin.HandlerFunc {
 			zap.String("query", query),
 			zap.String("ip", c.ClientIP()),
 			//zap.String("user-agent", c.Request.UserAgent()),
-			zap.String("errors", c.Errors.ByType(gin.ErrorTypePrivate).String()),
+			zap.String("body", bodyStr),
+			//zap.String("errors", c.Errors.ByType(gin.ErrorTypePrivate).String()),
 			zap.Duration("cost", cost),
 		)
 	}

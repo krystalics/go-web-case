@@ -10,15 +10,15 @@ import (
 )
 
 type DBConfig struct {
-	Addr         string   // for trace
-	DSN          string   // write data source name.
-	ReadDSN      []string // read data source name.
-	Active       int      // pool
-	Idle         int      // pool
-	IdleTimeout  int      // connect max life time.
-	QueryTimeout int      // query sql timeout
-	ExecTimeout  int      // execute sql timeout
-	TranTimeout  int      // transaction sql timeout
+	Addr         string   `mapstructure:"addr"`          // for trace
+	DSN          string   `mapstructure:"dsn"`           // write data source name.
+	ReadDSN      []string `mapstructure:"read-dsn"`      // read data source name.
+	Active       int      `mapstructure:"active"`        // pool
+	Idle         int      `mapstructure:"idle"`          // pool
+	IdleTimeout  int      `mapstructure:"idle-timeout"`  // connect max life time.
+	QueryTimeout int      `mapstructure:"query-timeout"` // query sql timeout
+	ExecTimeout  int      `mapstructure:"exec-timeout"`  // execute sql timeout
+	TranTimeout  int      `mapstructure:"tran-timeout"`  // transaction sql timeout
 }
 
 func InitDB(cfg *Config) *gorm.DB {
