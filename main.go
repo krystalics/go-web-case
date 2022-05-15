@@ -17,7 +17,7 @@ import (
 
 func main() {
 	config := conf.New()
-	conf.InitLogger(conf.GetLogConfig())
+	conf.InitLogger(config)
 	gin.SetMode(config.App.RunMode)
 	zap.L().Info("app config init success")
 	r := router.InitRouter()

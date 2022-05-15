@@ -14,12 +14,12 @@ type LogConfig struct {
 	MaxBackups int    `json:"max_backups"`
 }
 
-func InitLogger(cfg *LogConfig) {
-	writer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
+func InitLogger(cfg *Config) {
+	writer := getLogWriter(cfg.Log.Filename, cfg.Log.MaxSize, cfg.Log.MaxBackups, cfg.Log.MaxAge)
 	encoder := getEncoder()
 
 	l := new(zapcore.Level)
-	err := l.UnmarshalText([]byte(cfg.Level))
+	err := l.UnmarshalText([]byte(cfg.Log.Level))
 	if err != nil {
 		return
 	}
@@ -28,14 +28,18 @@ func InitLogger(cfg *LogConfig) {
 		encoder, writer, l,
 	)
 
-	logger := zap.New(
-		core,
-		zap.AddCaller(),
-		zap.AddStacktrace(zap.ErrorLevel), //error级别的日志打印堆栈
-	)
+	var logger *zap.Logger
+	if cfg.App.RunMode == "debug" {
+		logger, _ = zap.NewDevelopment()
+	} else {
+		logger = zap.New(
+			core,
+			zap.AddCaller(),
+			zap.AddStacktrace(zap.ErrorLevel), //error级别的日志打印堆栈
+		)
+	}
 
 	zap.ReplaceGlobals(logger) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
-
 	return
 }
 

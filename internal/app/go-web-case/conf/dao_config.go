@@ -4,8 +4,6 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-	"gorm.io/gorm/schema"
 )
 
 type DBConfig struct {
@@ -21,18 +19,13 @@ type DBConfig struct {
 }
 
 func InitDB(cfg *DBConfig) *gorm.DB {
-	ormLogger := logger.Default
+	//ormLogger := logger.Default
 
-	db, err := gorm.Open(mysql.Open(cfg.DSN), &gorm.Config{
-		Logger: ormLogger,
-		NamingStrategy: schema.NamingStrategy{
-			TablePrefix: "", // 表名前缀
-		},
-	})
+	db, err := gorm.Open(mysql.Open(cfg.DSN), &gorm.Config{})
 
 	//根据 *gorm.DB 获取 *sql.DB 来配置线程池
 	sqlDB, err := db.DB()
-	defer sqlDB.Close()
+	//defer sqlDB.Close()
 
 	if err != nil {
 		zap.L().Fatal(err.Error())
@@ -41,8 +34,8 @@ func InitDB(cfg *DBConfig) *gorm.DB {
 
 	sqlDB.SetMaxIdleConns(cfg.Idle)
 	sqlDB.SetMaxOpenConns(cfg.Active)
-
+	sqlDB.Ping()
+	//sqlDB.SetConnMaxLifetime(cfg.)
 	zap.L().Info("db connected success")
 	return db
 }
-

@@ -10,10 +10,10 @@ type Service struct {
 	dao *dao.Dao
 }
 
-var srv *Service
+var Srv *Service
 
 func New(c *conf.Config) (s *Service) {
-	srv = &Service{
+	Srv = &Service{
 		c:   c,
 		dao: dao.New(c),
 	}

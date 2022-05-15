@@ -7,13 +7,12 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"runtime"
-	"runtime/debug"
 	"strconv"
 	"strings"
 	"time"
 )
 
-//gin有自己的日志体系、和zap需要融合
+//GinLogger gin有自己的日志体系、和zap需要融合
 //参考 https://www.liwenzhou.com/posts/Go/use_zap_in_gin/
 func GinLogger() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -32,7 +31,7 @@ func GinLogger() gin.HandlerFunc {
 			zap.String("path", path),
 			zap.String("query", query),
 			zap.String("ip", c.ClientIP()),
-			zap.String("user-agent", c.Request.UserAgent()),
+			//zap.String("user-agent", c.Request.UserAgent()),
 			zap.String("errors", c.Errors.ByType(gin.ErrorTypePrivate).String()),
 			zap.Duration("cost", cost),
 		)
@@ -71,13 +70,13 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 				if stack {
 					zap.L().Error("[Recovery from panic]",
 						zap.Any("error", err),
-						zap.String("request", string(request)),
-						zap.String("stack", string(debug.Stack())),
+						//zap.String("request", string(request)),
+						//zap.String("stack", string(debug.Stack())),
 					)
 				} else {
 					zap.L().Error("[Recovery from panic]",
 						zap.Any("error", err),
-						zap.String("request", string(request)),
+						//zap.String("request", string(request)),
 					)
 				}
 

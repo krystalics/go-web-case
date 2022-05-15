@@ -1,11 +1,23 @@
 package common
 
+import (
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
 // JSONResponse Response对象结构
 type JSONResponse struct {
-	Errno     string      `json:"errno"`
-	ErrMsg    string      `json:"errmsg"`
-	RequestID string      `json:"request_id"`
-	Data      interface{} `json:"data"`
+	Errno  string      `json:"errno"`
+	ErrMsg string      `json:"errmsg"`
+	Data   interface{} `json:"data"`
+}
+
+func ResSuccess(c *gin.Context, data interface{}) {
+	c.JSON(http.StatusOK, GetSuccess(data, "success"))
+}
+
+func ResFailed(c *gin.Context, data interface{}) {
+	c.JSON(http.StatusOK, GetError(GetErrorString(InternalServerError), nil, "failed"))
 }
 
 // GetSuccess 获取成功的Response信息
@@ -13,12 +25,11 @@ type JSONResponse struct {
 // @param  requestID string 请求ID
 // @param  msg string response消息
 // @return    	*JSONResponse   response对象
-func GetSuccess(data interface{}, requestID string, msg string) *JSONResponse {
+func GetSuccess(data interface{}, msg string) *JSONResponse {
 	return &JSONResponse{
-		Errno:     Success,
-		ErrMsg:    msg,
-		RequestID: requestID,
-		Data:      data,
+		Errno:  Success,
+		ErrMsg: msg,
+		Data:   data,
 	}
 }
 
@@ -27,11 +38,10 @@ func GetSuccess(data interface{}, requestID string, msg string) *JSONResponse {
 // @param data interface{} response数据
 // @param  requestID string 请求ID
 // @return    	*JSONResponse   response对象
-func GetError(errorNo string, data interface{}, requestID string, args ...string) *JSONResponse {
+func GetError(errorNo string, data interface{}, args ...string) *JSONResponse {
 	return &JSONResponse{
-		Errno:     errorNo,
-		ErrMsg:    GetErrorString(errorNo, args...),
-		RequestID: requestID,
-		Data:      data,
+		Errno:  errorNo,
+		ErrMsg: GetErrorString(errorNo, args...),
+		Data:   data,
 	}
 }

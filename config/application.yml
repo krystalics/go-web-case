@@ -13,10 +13,10 @@ log:
 
 datasource:
   addr: 127.0.0.1:3306
-  dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local
-  read-dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local
-    - root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local
-    - root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True&loc=Local
+  dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True
+  read-dsn: root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True
+    - root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True
+    - root:root@tcp(127.0.0.1:3306)/permission?charset=utf8mb4&parseTime=True
   active: 200
   idle: 200
   idle-time-out: 60 #单位都是s

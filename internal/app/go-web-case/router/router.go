@@ -19,7 +19,8 @@ func InitRouter() *gin.Engine {
 	router.Use(middleware.CorsHandler(), middleware.GinRecovery(true), middleware.GinLogger())
 
 	RegisterPprof(router)
-	RegisterHello(router)
+
+	RegisterUser(router)
 
 	return router
 }
