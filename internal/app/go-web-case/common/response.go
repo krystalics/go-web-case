@@ -17,7 +17,11 @@ func ResSuccess(c *gin.Context, data interface{}) {
 }
 
 func ResFailed(c *gin.Context, data interface{}) {
-	c.JSON(http.StatusOK, GetError(GetErrorString(InternalServerError), nil, "failed"))
+	c.JSON(http.StatusOK, GetFailed(data, "failed"))
+}
+
+func ResError(c *gin.Context, data interface{}) {
+	c.JSON(http.StatusInternalServerError, GetError(InternalServerError, data, ""))
 }
 
 // GetSuccess 获取成功的Response信息
@@ -28,6 +32,14 @@ func ResFailed(c *gin.Context, data interface{}) {
 func GetSuccess(data interface{}, msg string) *JSONResponse {
 	return &JSONResponse{
 		Errno:  Success,
+		ErrMsg: msg,
+		Data:   data,
+	}
+}
+
+func GetFailed(data interface{}, msg string) *JSONResponse {
+	return &JSONResponse{
+		Errno:  Failed,
 		ErrMsg: msg,
 		Data:   data,
 	}

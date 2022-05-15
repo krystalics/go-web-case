@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-web-case/internal/app/go-web-case/common"
 	"go.uber.org/zap"
 	"net"
-	"net/http"
 	"net/http/httputil"
 	"runtime"
 	"strconv"
@@ -79,7 +79,8 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 					)
 				}
 
-				c.AbortWithStatus(http.StatusInternalServerError)
+				common.ResError(c, err)
+				//c.AbortWithStatus(http.StatusInternalServerError)
 			}
 		}()
 

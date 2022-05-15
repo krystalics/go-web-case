@@ -11,6 +11,10 @@ func CreateUser(c *gin.Context) {
 	var user model.User
 	c.Bind(&user)
 
-	service.Srv.CreateUser(user)
-	common.ResSuccess(c, nil)
+	_, err := service.Srv.CreateUser(user)
+	if err != nil {
+		common.ResFailed(c, err)
+	} else {
+		common.ResSuccess(c, nil)
+	}
 }

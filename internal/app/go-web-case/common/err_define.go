@@ -4,6 +4,7 @@ import "fmt"
 
 const (
 	Success                = "0"
+	Failed                 = "1"
 	InternalServerError    = "InternalServerError"
 	IamAuthenticateError   = "IamAuthenticateError"
 	IamAuthError           = "IamAuthError"
